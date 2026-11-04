@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIFT 실습 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/roslib@1.4.1/build/roslib.min.js"></script>
+<style>
+:root {
+  --bg: #f4f5f7; --card: #ffffff; --ink: #1d232b; --muted: #5d6773; --line: #dde1e6;
+  --accent: #1f6feb; --ok: #1a7f37; --warn: #b26a00; --bad: #c62828; --soft: #eef3fb;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --card: #1b2128; --ink: #e6e9ed; --muted: #9aa4af; --line: #2c343d;
+    --accent: #58a6ff; --ok: #3fb950; --warn: #d29922; --bad: #f85149; --soft: #1f2a37;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.55 "Pretendard", "Malgun Gothic", system-ui, sans-serif; }
+header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line);
+  padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+header h1 { font-size: 17px; margin: 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+  background: var(--soft); font-size: 13px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+.dot.ok { background: var(--ok); } .dot.bad { background: var(--bad); } .dot.warn { background: var(--warn); }
+header input { width: 190px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--ink); font: inherit; font-size: 13px; }
+main { max-width: 1280px; margin: 0 auto; padding: 16px; display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+section h2 { font-size: 16px; margin: 0 0 2px; display: flex; justify-content: space-between; gap: 8px; }
+.topic { font: 12px ui-monospace, Consolas, monospace; color: var(--muted); font-weight: normal; }
+.lead { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+.rows { display: grid; gap: 8px; }
+.row { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 8px 10px; border-radius: 8px; background: var(--soft); }
+.row b { font-weight: 600; }
+.row .v { font: 600 15px ui-monospace, Consolas, monospace; text-align: right; }
+.row small { grid-column: 1 / -1; color: var(--muted); font-size: 12.5px; }
+.big { font-size: 28px; font-weight: 700; font-family: ui-monospace, Consolas, monospace; }
+canvas, #cam { width: 100%; border-radius: 8px; background: var(--soft); display: block; }
+#cam { aspect-ratio: 4 / 3; object-fit: contain; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+.pad { display: grid; grid-template-columns: repeat(3, 72px); grid-template-rows: repeat(3, 64px); gap: 8px; justify-content: center; margin: 8px 0; }
+.pad button, .btn { border: 1px solid var(--line); background: var(--soft); color: var(--ink); border-radius: 10px;
+  font: 600 15px inherit; cursor: pointer; touch-action: none; user-select: none; }
+.pad button { font-size: 22px; }
+.pad button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pad .stop { background: var(--bad); color: #fff; border-color: var(--bad); font-size: 15px; }
+.btn { padding: 7px 12px; font-size: 14px; }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+label.slider { display: grid; grid-template-columns: 1fr auto; gap: 4px; font-size: 13.5px; margin-top: 6px; }
+label.slider input { grid-column: 1 / -1; width: 100%; }
+.note { font-size: 13px; padding: 8px 10px; border-radius: 8px; border-left: 4px solid var(--warn); background: var(--soft); margin-top: 8px; }
+.note.ok { border-color: var(--ok); }
+.tabs { display: flex; gap: 6px; margin: 6px 0 10px; flex-wrap: wrap; }
+.tabs button { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; font: inherit; font-size: 13.5px; }
+.tabs button[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.check { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; padding: 8px 4px; border-bottom: 1px solid var(--line); }
+.check:last-child { border-bottom: 0; }
+.check input { width: 18px; height: 18px; margin-top: 3px; }
+.check small { grid-column: 2; color: var(--muted); font-size: 12.5px; }
+.check code, .lead code, small code { font: 12px ui-monospace, Consolas, monospace; background: var(--soft); padding: 1px 4px; border-radius: 4px; }
+.auto { font-size: 11.5px; color: var(--ok); font-weight: 600; margin-left: 6px; }
+.progress { height: 8px; border-radius: 99px; background: var(--soft); overflow: hidden; margin-top: 4px; }
+.progress div { height: 100%; background: var(--ok); width: 0; transition: width .3s; }
+.wide { grid-column: 1 / -1; }
+#log { font: 12px ui-monospace, Consolas, monospace; color: var(--muted); white-space: pre-wrap; max-height: 90px; overflow: auto; margin: 6px 0 0; }
+@media (max-width: 420px) { main { padding: 12px; grid-template-columns: 1fr; } header input { width: 100%; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>LIFT 실습 대시보드</h1>
+  <span class="pill"><span class="dot" id="connDot"></span><span id="connText">연결 안 됨</span></span>
+  <span class="pill">시뮬레이터 시간 <b id="simTime">-</b></span>
+  <label class="pill">rosbridge 주소 <input id="url" value="ws://localhost:9090" aria-label="rosbridge 주소"></label>
+  <button class="btn" id="reconnect">다시 연결</button>
+</header>
+
+<main>
+  <!-- 1. 로봇 상태 -->
+  <section>
+    <h2>로봇 상태 <span class="topic">/odom · /safety_state · /mission_state</span></h2>
+    <p class="lead">로봇이 지금 어디에 있고, 어느 쪽을 보고, 얼마나 빨리 움직이는지입니다.</p>
+    <div class="rows">
+      <div class="row"><b>위치 (x, y)</b><span class="v" id="pos">-</span>
+        <small>출발점에서 얼마나 이동했는지 [m]. 바퀴 회전으로 계산한 값(오도메트리)이라 오래 달리면 오차가 쌓입니다.</small></div>
+      <div class="row"><b>바라보는 방향</b><span class="v" id="yaw">-</span>
+        <small>0° 는 출발할 때 정면, 반시계 방향이 + 입니다.</small></div>
+      <div class="row"><b>속도</b><span class="v" id="vel">-</span>
+        <small>직진 속도 [m/s] 와 회전 속도 [rad/s]. 1 rad/s 는 초당 약 57° 회전입니다.</small></div>
+      <div class="row"><b>안전 상태</b><span class="v" id="safety">안전 노드 없음</span>
+        <small>3일차 안전 노드(safety_stop)가 보내는 값. NORMAL 정상 / SLOW 0.7 m 안 감속 / STOP 0.4 m 안 전진 금지.</small></div>
+      <div class="row"><b>임무·배터리</b><span class="v" id="mission">상태 서버 없음</span>
+        <small>3일차 상태 서버(status_server)가 1초마다 보내는 값입니다.</small></div>
+    </div>
+    <button class="btn" id="callStatus" style="margin-top:10px">/robot_status 서비스 호출</button>
+    <div id="statusReply" class="note" hidden></div>
+  </section>
+
+  <!-- 2. 주행 -->
+  <section>
+    <h2>버튼으로 주행 <span class="topic" id="driveTopic">/cmd_vel</span></h2>
+    <p class="lead">버튼을 <b>누르고 있는 동안만</b> 움직이고, 손을 떼면 멈춥니다. 키보드 방향키와 스페이스(정지)도 됩니다.</p>
+    <div class="pad" role="group" aria-label="주행 버튼">
+      <span></span><button data-v="1" data-w="0" aria-label="전진">▲</button><span></span>
+      <button data-v="0" data-w="1" aria-label="왼쪽 회전">◀</button>
+      <button class="stop" id="stopBtn" aria-label="정지">정지</button>
+      <button data-v="0" data-w="-1" aria-label="오른쪽 회전">▶</button>
+      <span></span><button data-v="-1" data-w="0" aria-label="후진">▼</button><span></span>
+    </div>
+    <label class="slider">직진 속도 <b id="vOut">0.15 m/s</b><input type="range" id="vMax" min="0.05" max="0.4" step="0.05" value="0.15"></label>
+    <label class="slider">회전 속도 <b id="wOut">0.6 rad/s</b><input type="range" id="wMax" min="0.2" max="1.5" step="0.1" value="0.6"></label>
+    <div class="note" id="driveNote">연결 후 안전 노드가 있는지 확인합니다.</div>
+  </section>
+
+  <!-- 3. LiDAR -->
+  <section>
+    <h2>LiDAR 거리 지도 <span class="topic">/scan</span></h2>
+    <p class="lead">레이저로 360° 주변 거리를 잽니다. 가운데 삼각형이 로봇, 위쪽이 로봇 정면입니다.</p>
+    <canvas id="scan" width="520" height="520" aria-label="LiDAR 점 지도"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--bad)"></i>0.4 m 안 (정지)</span>
+      <span><i class="sw" style="background:var(--warn)"></i>0.7 m 안 (감속)</span>
+      <span><i class="sw" style="background:var(--accent)"></i>그 밖</span>
+      <span>원 간격 1 m</span>
+    </div>
+    <div class="rows" style="margin-top:10px">
+      <div class="row"><b>정면 가장 가까운 물체</b><span class="v big" id="front">-</span>
+        <small>정면 ±30° 안의 최소 거리. 3일차 안전 노드가 감속·정지를 판단하는 바로 그 값입니다.</small></div>
+      <div class="row"><b>측정점 수 · 간격</b><span class="v" id="scanInfo">-</span>
+        <small>한 바퀴에 몇 번 재는지. 2일차 과제 "(angle_max − angle_min) / angle_increment" 의 답입니다.</small></div>
+    </div>
+    <label class="slider">라이다 장착 각도 보정 <b id="offOut">90°</b><input type="range" id="offset" min="-180" max="180" step="90" value="90"></label>
+    <p class="lead" style="margin-top:4px">TurtleBot4 의 라이다는 90° 돌아간 채 달려 있습니다(3일차 scan_frame.py). TurtleBot3 는 0°.</p>
+  </section>
+
+  <!-- 4. 카메라 -->
+  <section>
+    <h2>카메라 <span class="topic">/rgbd_camera/image</span></h2>
+    <p class="lead">로봇 앞 카메라 영상입니다. LiDAR 평면보다 높거나 낮은 물체(책상 상판, 지게차 포크)는 카메라에만 보입니다.</p>
+    <img id="cam" alt="로봇 카메라 영상">
+    <div class="rows" style="margin-top:10px">
+      <div class="row"><b>해상도 · 초점거리</b><span class="v" id="camInfo">-</span>
+        <small>fx, fy, cx, cy 는 7일차에 화면 속 사람 위치를 지도 좌표로 바꿀 때 씁니다.</small></div>
+    </div>
+  </section>
+
+  <!-- 5. IMU -->
+  <section>
+    <h2>IMU (기울기·회전 센서) <span class="topic">/imu</span></h2>
+    <p class="lead">가속도와 회전 속도를 아주 빠르게(초당 약 200번) 잽니다.</p>
+    <div class="rows">
+      <div class="row"><b>위아래 가속도 (z)</b><span class="v big" id="az">-</span>
+        <small>멈춰 있어도 약 9.8 이 나옵니다. 지구 중력을 재고 있기 때문입니다(2일차 확인 항목).</small></div>
+      <div class="row"><b>앞뒤 가속도 (x)</b><span class="v" id="ax">-</span>
+        <small>출발·정지할 때 값이 튑니다. 충격 감지에도 씁니다.</small></div>
+      <div class="row"><b>회전 속도 (z)</b><span class="v" id="gz">-</span>
+        <small>제자리 회전 버튼을 누르면 바뀝니다. 오도메트리의 회전 오차를 보완합니다.</small></div>
+    </div>
+  </section>
+
+  <!-- 6. 연결 상태 -->
+  <section>
+    <h2>토픽 수신 상태</h2>
+    <p class="lead">각 센서 값이 마지막으로 도착한 시간입니다. 1초 넘게 멈추면 그 노드나 시뮬레이터를 확인하세요.</p>
+    <div class="rows" id="alive"></div>
+    <pre id="log"></pre>
+  </section>
+
+  <!-- 7. 체크리스트 -->
+  <section class="wide">
+    <h2>일차별 실습 체크리스트 <span class="topic" id="progText"></span></h2>
+    <div class="progress" aria-hidden="true"><div id="progBar"></div></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="checks" role="tabpanel"></div>
+    <p class="lead" style="margin-top:8px"><span class="auto">자동</span> 표시 항목은 대시보드가 토픽을 보고 스스로 체크합니다. 체크 상태는 이 브라우저에만 저장됩니다.</p>
+  </section>
+</main>
+
+<script>
+// ---------- 공통 ----------
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* 저장 불가 환경은 무시 */ } }
+};
+const log = msg => { const el = $('log'); el.textContent = (new Date().toLocaleTimeString() + ' ' + msg + '\n' + el.textContent).slice(0, 2000); };
+const fmt = (n, d = 2) => (n === undefined || n === null || !isFinite(n)) ? '-' : n.toFixed(d);
+
+// ---------- 체크리스트 (1~3일차 교재 기준) ----------
+const DAYS = {
+  '1일차': [
+    ['wsl', 'WSL2 + Ubuntu 24.04 설치', '<code>wsl -l -v</code> 에서 VERSION 이 2'],
+    ['gpu', '화면 표시와 GPU 가속', '<code>xeyes</code> 창이 뜨고 <code>glxinfo -B</code> 에 D3D12 (GPU 이름)'],
+    ['ros', 'ROS 2 Jazzy 설치', '<code>printenv ROS_DISTRO</code> 결과가 jazzy'],
+    ['talk', 'talker / listener 송수신', '두 터미널에서 Hello World 가 오가는지'],
+    ['turtle', 'turtlesim 4가지 통신 기록표', '토픽 발행 · 서비스(/spawn) · 액션(rotate_absolute) · 파라미터(background_r)'],
+    ['clean1', '터미널을 순서대로 닫기', '마지막에 <code>ros2 node list</code> 가 비어 있음']
+  ],
+  '2일차': [
+    ['env', 'check_env.sh 모두 OK', 'ROS 2 / Gazebo / 도구 항목이 [ OK ]'],
+    ['lift', '새 터미널에 [LIFT] 준비 완료', '<code>~/lift.sh</code> 가 자동 실행되는지'],
+    ['drive', 'TurtleBot4 를 움직였다', '키보드나 이 대시보드 버튼으로 0.2 m 이상 이동', 'autoDrive'],
+    ['sensor', '센서 토픽 5개 관찰', '/scan · /imu · /odom · /rgbd_camera/image · camera_info 수신', 'autoSensors'],
+    ['gravity', 'IMU z ≈ 9.8 의 이유 설명', '정지해 있어도 중력이 측정된다'],
+    ['brief', '현장 정의서 작성', '<code>docs/site_brief.md</code> 의 성공 기준이 숫자 + 측정 방법'],
+    ['m0', 'git tag M0', '<code>git tag</code> 에 M0 가 보임']
+  ],
+  '3일차': [
+    ['build', '노드 3개 빌드', '<code>ros2 pkg executables amr_basics</code> 에 3개'],
+    ['safe', '안전 노드 실행 중', '/safety_state 토픽 수신', 'autoSafety'],
+    ['slowstop', '상자 앞 SLOW → STOP', '/safety_state 에서 SLOW 와 STOP 을 모두 봄', 'autoSlowStop'],
+    ['status', '/robot_status 서비스 응답', '위 "로봇 상태" 카드의 서비스 호출 버튼으로 확인 가능', 'autoStatus'],
+    ['wiring', '안전 노드를 끄면 로봇 정지', '순찰 중 safety_stop 만 Ctrl+C → 로봇이 멈추면 합격'],
+    ['graph', 'rqt_graph 배선 확인', 'patrol → /cmd_vel_raw → safety_stop → /cmd_vel'],
+    ['qos', 'QoS 실험 기록', '/scan 을 reliable 로는 못 받고 best_effort 로는 받음']
+  ]
+};
+let checks = store.get('lift.checks', {});
+let curDay = store.get('lift.day', '1일차');
+const auto = { autoDrive: false, autoSensors: false, autoSafety: false, autoSlowStop: false, autoStatus: false };
+
+function renderChecks() {
+  $('tabs').innerHTML = Object.keys(DAYS).map(d =>
+    `<button role="tab" aria-selected="${d === curDay}" data-day="${d}">${d}</button>`).join('');
+  $('checks').innerHTML = DAYS[curDay].map(([id, title, how, a]) => {
+    const key = curDay + ':' + id;
+    return `<label class="check"><input type="checkbox" data-key="${key}" ${checks[key] ? 'checked' : ''}>
+      <span><b>${title}</b>${a ? '<span class="auto">자동</span>' : ''}</span><small>${how}</small></label>`;
+  }).join('');
+  const all = Object.entries(DAYS).flatMap(([d, items]) => items.map(i => d + ':' + i[0]));
+  const done = all.filter(k => checks[k]).length;
+  $('progText').textContent = `전체 ${done} / ${all.length}`;
+  $('progBar').style.width = (100 * done / all.length) + '%';
+}
+$('tabs').addEventListener('click', e => {
+  const d = e.target.dataset.day; if (!d) return;
+  curDay = d; store.set('lift.day', d); renderChecks();
+});
+$('checks').addEventListener('change', e => {
+  const k = e.target.dataset.key; if (!k) return;
+  checks[k] = e.target.checked; store.set('lift.checks', checks); renderChecks();
+});
+function autoCheck(flag) {
+  if (auto[flag]) return;
+  auto[flag] = true;
+  for (const [d, items] of Object.entries(DAYS))
+    for (const [id, , , a] of items)
+      if (a === flag && !checks[d + ':' + id]) { checks[d + ':' + id] = true; log('체크리스트 자동 완료: ' + d + ' ' + id); }
+  store.set('lift.checks', checks); renderChecks();
+}
+renderChecks();
+
+// ---------- ROS 연결 ----------
+let ros = null, subs = [];
+const last = {};                     // 토픽별 마지막 수신 시각
+const WATCH = ['/odom', '/scan', '/imu', '/rgbd_camera/image', '/safety_state', '/mission_state'];
+const seen = (t) => { last[t] = performance.now(); };
+
+function connect() {
+  if (ros) { subs.forEach(s => s.unsubscribe()); subs = []; ros.close(); }
+  const url = $('url').value.trim();
+  store.set('lift.url', url);
+  setConn('warn', '연결 중…');
+  ros = new ROSLIB.Ros({ url });
+  ros.on('connection', () => { setConn('ok', '연결됨'); log('rosbridge 연결: ' + url); subscribeAll(); detectSafety(); });
+  ros.on('error', () => { setConn('bad', '연결 실패 - dashboard.sh 가 켜져 있는지 확인'); });
+  ros.on('close', () => { setConn('bad', '연결 끊김'); stopDrive(); });
+}
+function setConn(cls, text) { $('connDot').className = 'dot ' + cls; $('connText').textContent = text; }
+function sub(name, type, cb, throttle = 0) {
+  const t = new ROSLIB.Topic({ ros, name, messageType: type, throttle_rate: throttle, queue_length: 1 });
+  t.subscribe(m => { seen(name); cb(m); });
+  subs.push(t);
+}
+
+let odom0 = null, maxMove = 0;
+function subscribeAll() {
+  sub('/clock', 'rosgraph_msgs/msg/Clock', m => { $('simTime').textContent = m.clock.sec + ' 초'; }, 500);
+
+  sub('/odom', 'nav_msgs/msg/Odometry', m => {
+    const p = m.pose.pose.position, q = m.pose.pose.orientation, t = m.twist.twist;
+    const yaw = Math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z));
+    $('pos').textContent = `${fmt(p.x)}, ${fmt(p.y)} m`;
+    $('yaw').textContent = `${fmt(yaw * 180 / Math.PI, 0)}°`;
+    $('vel').textContent = `${fmt(t.linear.x)} m/s · ${fmt(t.angular.z)} rad/s`;
+    if (!odom0) odom0 = p;
+    maxMove = Math.max(maxMove, Math.hypot(p.x - odom0.x, p.y - odom0.y));
+    if (maxMove > 0.2) autoCheck('autoDrive');
+  }, 100);
+
+  sub('/scan', 'sensor_msgs/msg/LaserScan', drawScan, 100);
+
+  sub('/imu', 'sensor_msgs/msg/Imu', m => {
+    $('az').textContent = fmt(m.linear_acceleration.z) + ' m/s²';
+    $('ax').textContent = fmt(m.linear_acceleration.x) + ' m/s²';
+    $('gz').textContent = fmt(m.angular_velocity.z) + ' rad/s';
+  }, 100);
+
+  // 원본 영상은 커서 압축 토픽(JPEG)을 받는다
+  sub('/rgbd_camera/image/compressed', 'sensor_msgs/msg/CompressedImage', m => {
+    seen('/rgbd_camera/image');
+    $('cam').src = 'data:image/jpeg;base64,' + m.data;
+  }, 200);
+  sub('/rgbd_camera/camera_info', 'sensor_msgs/msg/CameraInfo', m => {
+    const k = m.k;
+    $('camInfo').textContent = `${m.width}x${m.height} · fx ${fmt(k[0], 0)} fy ${fmt(k[4], 0)} cx ${fmt(k[2], 0)} cy ${fmt(k[5], 0)}`;
+  }, 2000);
+
+  const slowStopSeen = new Set();
+  sub('/safety_state', 'std_msgs/msg/String', m => {
+    const [state, d] = m.data.split('|');
+    $('safety').textContent = `${state} (${d} m)`;
+    $('safety').style.color = state === 'STOP' ? 'var(--bad)' : state === 'SLOW' ? 'var(--warn)' : 'var(--ok)';
+    autoCheck('autoSafety');
+    if (state === 'SLOW' || state === 'STOP') slowStopSeen.add(state);
+    if (slowStopSeen.size === 2) autoCheck('autoSlowStop');
+  });
+  sub('/mission_state', 'std_msgs/msg/String', m => { $('mission').textContent = m.data.replace('|', ' · '); });
+}
+
+// ---------- LiDAR 그리기 ----------
+const cv = $('scan'), cx = cv.getContext('2d');
+let sensorsSeen = new Set();
+function drawScan(m) {
+  const css = getComputedStyle(document.documentElement);
+  const W = cv.width, H = cv.height, R = 8;                  // 반경 8 m 까지 표시
+  const s = (W / 2 - 10) / R, off = (+$('offset').value) * Math.PI / 180;
+  cx.clearRect(0, 0, W, H);
+  cx.strokeStyle = css.getPropertyValue('--line'); cx.lineWidth = 1;
+  for (let r = 1; r <= R; r++) { cx.beginPath(); cx.arc(W / 2, H / 2, r * s, 0, 2 * Math.PI); cx.stroke(); }
+  // 정면 ±30° 부채꼴
+  cx.fillStyle = 'rgba(128,128,128,0.12)';
+  cx.beginPath(); cx.moveTo(W / 2, H / 2); cx.arc(W / 2, H / 2, R * s, -Math.PI / 2 - Math.PI / 6, -Math.PI / 2 + Math.PI / 6); cx.fill();
+  let front = Infinity;
+  const colBad = css.getPropertyValue('--bad'), colWarn = css.getPropertyValue('--warn'), colAcc = css.getPropertyValue('--accent');
+  m.ranges.forEach((r, i) => {
+    if (r === null || !isFinite(r) || r < m.range_min || r > m.range_max) return;
+    let a = m.angle_min + i * m.angle_increment + off;      // 라이다 기준 → 로봇 정면 기준
+    a = Math.atan2(Math.sin(a), Math.cos(a));
+    if (Math.abs(a) <= Math.PI / 6) front = Math.min(front, r);
+    if (r > R) return;
+    // 화면 위쪽 = 로봇 정면(x), 왼쪽 = 로봇 왼쪽(y)
+    const px = W / 2 - Math.sin(a) * r * s, py = H / 2 - Math.cos(a) * r * s;
+    cx.fillStyle = r <= 0.4 ? colBad : r <= 0.7 ? colWarn : colAcc;
+    cx.fillRect(px - 2, py - 2, 4, 4);
+  });
+  cx.fillStyle = css.getPropertyValue('--ink');
+  cx.beginPath(); cx.moveTo(W / 2, H / 2 - 12); cx.lineTo(W / 2 - 8, H / 2 + 8); cx.lineTo(W / 2 + 8, H / 2 + 8); cx.fill();
+  $('front').textContent = isFinite(front) ? fmt(front) + ' m' : '측정 범위 밖';
+  $('front').style.color = front <= 0.4 ? 'var(--bad)' : front <= 0.7 ? 'var(--warn)' : 'var(--ink)';
+  const n = Math.round((m.angle_max - m.angle_min) / m.angle_increment) + 1;
+  $('scanInfo').textContent = `${n}개 · ${fmt(m.angle_increment * 180 / Math.PI, 1)}°`;
+}
+$('offset').addEventListener('input', e => { $('offOut').textContent = e.target.value + '°'; });
+
+// ---------- 토픽 수신 표시 ----------
+const LABEL = { '/odom': '오도메트리', '/scan': 'LiDAR', '/imu': 'IMU', '/rgbd_camera/image': '카메라', '/safety_state': '안전 노드 (3일차)', '/mission_state': '상태 서버 (3일차)' };
+setInterval(() => {
+  const now = performance.now();
+  $('alive').innerHTML = WATCH.map(t => {
+    const age = last[t] ? (now - last[t]) / 1000 : null;
+    const cls = age === null ? '' : age < 1.5 ? 'ok' : 'bad';
+    const txt = age === null ? '아직 안 옴' : age < 1.5 ? '수신 중' : fmt(age, 0) + '초 전 멈춤';
+    if (age !== null && age < 1.5 && ['/odom', '/scan', '/imu', '/rgbd_camera/image'].includes(t)) sensorsSeen.add(t);
+    return `<div class="row"><b><span class="dot ${cls}" style="display:inline-block;margin-right:6px"></span>${LABEL[t]}</b><span class="v">${txt}</span><small>${t}</small></div>`;
+  }).join('');
+  if (sensorsSeen.size === 4 && last['/rgbd_camera/image']) autoCheck('autoSensors');
+}, 500);
+
+// ---------- 주행 ----------
+// 3일차 원칙: 안전 노드가 있으면 /cmd_vel_raw 로 보내 안전 노드를 거치게 한다.
+let cmdTopic = null, drive = { v: 0, w: 0 }, driveTimer = null;
+function setCmdTopic(name, viaSafety) {
+  if (cmdTopic) cmdTopic.unadvertise();   // 예전 토픽 발행자를 남기면 rqt_graph 배선 시험이 헷갈린다
+  cmdTopic = new ROSLIB.Topic({ ros, name, messageType: 'geometry_msgs/msg/Twist' });
+  $('driveTopic').textContent = name;
+  const n = $('driveNote');
+  n.className = 'note' + (viaSafety ? ' ok' : '');
+  n.innerHTML = viaSafety
+    ? '안전 노드(safety_stop)가 켜져 있어 <code>/cmd_vel_raw</code> 로 보냅니다. 장애물 앞에서는 안전 노드가 감속·정지시킵니다.'
+    : '안전 노드가 없어 바퀴(<code>/cmd_vel</code>)로 직접 보냅니다. 장애물 앞에서 멈추지 않으니 천천히 조종하세요. 3일차 safety_stop 을 켜면 자동으로 바뀝니다.';
+}
+function detectSafety() {
+  ros.getNodes(nodes => {
+    const has = nodes.some(n => n.replace(/^\//, '') === 'safety_stop');
+    const want = has ? '/cmd_vel_raw' : '/cmd_vel';
+    if (!cmdTopic || cmdTopic.name !== want) { setCmdTopic(want, has); log('주행 명령 토픽: ' + want); }
+  }, () => { if (!cmdTopic) setCmdTopic('/cmd_vel', false); });
+}
+setInterval(() => { if (ros && ros.isConnected) detectSafety(); }, 3000);
+
+function send(v, w) {
+  if (!cmdTopic || !ros || !ros.isConnected) return;
+  cmdTopic.publish({ linear: { x: v, y: 0, z: 0 }, angular: { x: 0, y: 0, z: w } });
+}
+function startDrive(dv, dw, btn) {
+  drive = { v: dv * (+$('vMax').value), w: dw * (+$('wMax').value) };
+  document.querySelectorAll('.pad button').forEach(b => b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+  clearInterval(driveTimer);
+  send(drive.v, drive.w);
+  driveTimer = setInterval(() => send(drive.v, drive.w), 100);   // 10 Hz 로 계속 보내야 안전 노드 워치독(0.5초)에 걸리지 않는다
+}
+function stopDrive() {
+  clearInterval(driveTimer); driveTimer = null; drive = { v: 0, w: 0 };
+  document.querySelectorAll('.pad button').forEach(b => b.classList.remove('on'));
+  for (let i = 0; i < 3; i++) setTimeout(() => send(0, 0), i * 50);   // 유실 대비 3회
+}
+document.querySelectorAll('.pad button[data-v]').forEach(b => {
+  b.addEventListener('pointerdown', e => { b.setPointerCapture(e.pointerId); startDrive(+b.dataset.v, +b.dataset.w, b); });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, stopDrive));
+});
+$('stopBtn').addEventListener('click', stopDrive);
+const KEYS = { ArrowUp: [1, 0], ArrowDown: [-1, 0], ArrowLeft: [0, 1], ArrowRight: [0, -1] };
+let keyDown = null;
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.target.type !== 'range' && e.target.type !== 'checkbox') return;
+  if (e.code === 'Space') { e.preventDefault(); stopDrive(); return; }
+  const k = KEYS[e.key]; if (!k || keyDown === e.key) return;
+  e.preventDefault(); keyDown = e.key;
+  startDrive(k[0], k[1], document.querySelector(`.pad button[data-v="${k[0]}"][data-w="${k[1]}"]`));
+});
+document.addEventListener('keyup', e => { if (e.key === keyDown) { keyDown = null; stopDrive(); } });
+window.addEventListener('blur', stopDrive);
+document.addEventListener('visibilitychange', () => { if (document.hidden) stopDrive(); });
+$('vMax').addEventListener('input', e => { $('vOut').textContent = e.target.value + ' m/s'; });
+$('wMax').addEventListener('input', e => { $('wOut').textContent = e.target.value + ' rad/s'; });
+
+// ---------- 서비스 호출 ----------
+$('callStatus').addEventListener('click', () => {
+  const box = $('statusReply'); box.hidden = false;
+  if (!ros || !ros.isConnected) { box.className = 'note'; box.textContent = 'rosbridge 에 먼저 연결하세요.'; return; }
+  const srv = new ROSLIB.Service({ ros, name: '/robot_status', serviceType: 'std_srvs/srv/Trigger' });
+  box.className = 'note'; box.textContent = '응답 기다리는 중…';
+  const t = setTimeout(() => { box.textContent = '응답 없음. 3일차 status_server 가 켜져 있어야 합니다.'; }, 3000);
+  srv.callService({}, res => {
+    clearTimeout(t); box.className = 'note ok'; box.textContent = '응답: ' + res.message; autoCheck('autoStatus');
+  }, err => { clearTimeout(t); box.textContent = '호출 실패: ' + err; });
+});
+
+// ---------- 시작 ----------
+$('url').value = store.get('lift.url', 'ws://localhost:9090');
+$('reconnect').addEventListener('click', connect);
+connect();
+</script>
+</body>
+</html>
