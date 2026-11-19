@@ -1,0 +1,1098 @@
+<?xml version="1.0"?>
+<!-- make_classroom.py 로 자동 생성된 파일. 직접 고치지 말고 make_classroom.py 를 고친 뒤 다시 실행하세요. -->
+<sdf version="1.9">
+  <world name="classroom">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <scene>
+      <ambient>0.6 0.6 0.6 1</ambient>
+      <background>0.7 0.8 0.9 1</background>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <direction>-0.3 0.2 -1</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><plane><normal>0 0 1</normal><size>50 50</size></plane></geometry></collision>
+        <visual name="v"><geometry><plane><normal>0 0 1</normal><size>50 50</size></plane></geometry>
+          <material><ambient>0.6 0.6 0.6 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <model name="walls">
+      <static>true</static>
+      <pose>0.000 0.000 0 0 0 0</pose>
+      <link name="back">
+        <pose>0.000 -5.000 1.300 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>12.000 0.100 2.600</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>12.000 0.100 2.600</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+      <link name="left">
+        <pose>-6.000 0.000 1.300 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.100 10.000 2.600</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.100 10.000 2.600</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+      <link name="right">
+        <pose>6.000 0.000 1.300 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.100 10.000 2.600</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.100 10.000 2.600</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+      <link name="front_l">
+        <pose>-0.900 5.000 1.300 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>10.200 0.100 2.600</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10.200 0.100 2.600</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+      <link name="front_r">
+        <pose>5.600 5.000 1.300 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.800 0.100 2.600</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.800 0.100 2.600</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+      <link name="front_top">
+        <pose>4.700 5.000 2.350 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.000 0.100 0.500</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.000 0.100 0.500</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="door">
+      <static>true</static>
+      <pose>0.000 0.000 0 0 0 0</pose>
+      <link name="panel">
+        <pose>5.170 4.500 1.050 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 1.000 2.100</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 1.000 2.100</size></box></geometry>
+          <material><ambient>0.55 0.35 0.2 1</ambient><diffuse>0.55 0.35 0.2 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="projector_screen">
+      <static>true</static>
+      <pose>0.000 4.930 0 0 0 0</pose>
+      <link name="screen">
+        <pose>0.000 0.000 1.650 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>3.000 0.020 1.500</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>3.000 0.020 1.500</size></box></geometry>
+          <material><ambient>0.97 0.97 0.97 1</ambient><diffuse>0.97 0.97 0.97 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="teacher_desk">
+      <static>true</static>
+      <pose>-4.000 3.800 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.600 0.700 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.600 0.700 0.040</size></box></geometry>
+          <material><ambient>0.45 0.3 0.2 1</ambient><diffuse>0.45 0.3 0.2 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.760 0.310 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.760 -0.310 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.760 0.310 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.760 -0.310 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair_seat">
+        <pose>0.000 0.700 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair_post">
+        <pose>0.000 0.700 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair_back">
+        <pose>0.000 0.900 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r1_c1">
+      <static>true</static>
+      <pose>-3.600 2.000 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.800 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.800 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.000 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.000 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.000 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_seat">
+        <pose>0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_post">
+        <pose>0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_back">
+        <pose>0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r1_c2">
+      <static>true</static>
+      <pose>0.000 2.000 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.200 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.200 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r1_c3">
+      <static>true</static>
+      <pose>3.600 2.000 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.800 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.800 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.000 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.000 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.000 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_seat">
+        <pose>0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_post">
+        <pose>0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_back">
+        <pose>0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r2_c1">
+      <static>true</static>
+      <pose>-3.600 0.400 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.800 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.800 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.000 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.000 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.000 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_seat">
+        <pose>0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_post">
+        <pose>0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_back">
+        <pose>0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r2_c2">
+      <static>true</static>
+      <pose>0.000 0.400 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.200 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.200 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r2_c3">
+      <static>true</static>
+      <pose>3.600 0.400 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.800 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.800 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.000 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.000 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.000 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_seat">
+        <pose>0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_post">
+        <pose>0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_back">
+        <pose>0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r3_c1">
+      <static>true</static>
+      <pose>-3.600 -1.200 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.800 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.800 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.000 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.000 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.000 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_seat">
+        <pose>0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_post">
+        <pose>0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_back">
+        <pose>0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r3_c2">
+      <static>true</static>
+      <pose>0.000 -1.200 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.200 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.200 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r3_c3">
+      <static>true</static>
+      <pose>3.600 -1.200 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.800 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.800 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.860 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.860 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.000 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.000 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.000 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_seat">
+        <pose>0.600 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_post">
+        <pose>0.600 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair2_back">
+        <pose>0.600 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r4_c1">
+      <static>true</static>
+      <pose>-3.600 -2.800 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.200 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.200 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r4_c2">
+      <static>true</static>
+      <pose>0.000 -2.800 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.200 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.200 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="desk_r4_c3">
+      <static>true</static>
+      <pose>3.600 -2.800 0 0 0 0</pose>
+      <link name="top">
+        <pose>0.000 0.000 0.730 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>1.200 0.500 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.200 0.500 0.040</size></box></geometry>
+          <material><ambient>0.72 0.55 0.35 1</ambient><diffuse>0.72 0.55 0.35 1</diffuse></material></visual>
+      </link>
+      <link name="leg0">
+        <pose>0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg1">
+        <pose>0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg2">
+        <pose>-0.560 0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="leg3">
+        <pose>-0.560 -0.210 0.355 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.040 0.040 0.710</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.040 0.040 0.710</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_seat">
+        <pose>-0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_post">
+        <pose>-0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair0_back">
+        <pose>-0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_seat">
+        <pose>0.300 -0.550 0.450 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.400 0.040</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.400 0.040</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_post">
+        <pose>0.300 -0.550 0.215 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.050 0.050 0.430</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.050 0.050 0.430</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material></visual>
+      </link>
+      <link name="chair1_back">
+        <pose>0.300 -0.750 0.680 0 0 0.000</pose>
+        <collision name="c"><geometry><box><size>0.400 0.040 0.420</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.400 0.040 0.420</size></box></geometry>
+          <material><ambient>0.2 0.35 0.6 1</ambient><diffuse>0.2 0.35 0.6 1</diffuse></material></visual>
+      </link>
+    </model>
+  </world>
+</sdf>
