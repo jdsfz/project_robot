@@ -23,6 +23,7 @@
     project_robot/
     ├── docs/
     │   ├── decisions/         # 미정 안건·합의 기록·회의록
+    │   ├── parts/             # 파트별 요구사항·상세설계·진행기록
     │   └── interfaces/
     │       └── ros_interfaces.md   # 토픽, 좌표계, 단위 규약 초안
     ├── examples/
@@ -79,6 +80,10 @@ examples/ 자료는 구조 및 시연을 참고하기 위한 것입니다. 프�
 
 
 
+
+## 파트별 문서
+
+- A 파트(로봇 기반·주행): [docs/parts/A_로봇기반_주행/](docs/parts/A_로봇기반_주행/README.md) — 요구사항 정의서, 상세설계서, 작업계획 및 진행기록
 
 ## 결정 기록
 
